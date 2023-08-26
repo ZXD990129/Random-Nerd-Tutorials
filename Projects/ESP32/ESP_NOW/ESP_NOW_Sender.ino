@@ -21,12 +21,13 @@ typedef struct struct_message {
   char a[32];
   int b;
   float c;
-  String d;
-  bool e;
+  bool d;
 } struct_message;
 
 // Create a struct_message called myData
 struct_message myData;
+
+esp_now_peer_info_t peerInfo;
 
 // callback when data is sent
 void OnDataSent(const uint8_t *mac_addr, esp_now_send_status_t status) {
@@ -52,7 +53,6 @@ void setup() {
   esp_now_register_send_cb(OnDataSent);
   
   // Register peer
-  esp_now_peer_info_t peerInfo;
   memcpy(peerInfo.peer_addr, broadcastAddress, 6);
   peerInfo.channel = 0;  
   peerInfo.encrypt = false;
@@ -69,9 +69,8 @@ void loop() {
   strcpy(myData.a, "THIS IS A CHAR");
   myData.b = random(1,20);
   myData.c = 1.2;
-  myData.d = "Hello";
-  myData.e = false;
-
+  myData.d = false;
+  
   // Send message via ESP-NOW
   esp_err_t result = esp_now_send(broadcastAddress, (uint8_t *) &myData, sizeof(myData));
    

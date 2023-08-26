@@ -90,10 +90,14 @@ void loop() {
 }
 
 String httpGETRequest(const char* serverName) {
+  WiFiClient client;
   HTTPClient http;
     
-  // Your IP address with path or Domain name with URL path 
-  http.begin(serverName);
+  // Your Domain name with URL path or IP address with path
+  http.begin(client, serverName);
+  
+  // If you need Node-RED/server authentication, insert user and password below
+  //http.setAuthorization("REPLACE_WITH_SERVER_USERNAME", "REPLACE_WITH_SERVER_PASSWORD");
   
   // Send HTTP POST request
   int httpResponseCode = http.GET();
